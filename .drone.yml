@@ -1,0 +1,82 @@
+---
+kind: secret
+name: slack-webhook
+
+get:
+  path: drone-kubernetes-secrets-data
+  name: slack-webhook
+---
+kind: secret
+name: checkr-test-api-key
+
+get:
+  path: drone-kubernetes-secrets-data
+  name: checkr-test-api-key
+---
+kind: pipeline
+name: build-test
+
+clone:
+  depth: 50
+
+volumes:
+  - name: deps
+    temp: {}
+
+steps:
+  - name: slack-notification-start-build-images
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: slack-webhook
+      channel: ci
+      username: drone
+      template: >
+        <{{ build.link }}|Container build(s) #{{ build.number }} started>
+        <http://github.com/{{ repo.owner }}/{{ repo.name }}/tree/{{ build.branch }}|
+        on {{ repo.name }}:{{ build.branch }}> by {{ build.author }}
+
+  - name: build-modules
+    image: golang:1.13.0-alpine3.10
+    volumes:
+      - name: deps
+        path: /go
+    environment:
+      GOPRIVATE: github.com/ParaServices/*
+    commands:
+      - apk add --no-cache git
+      - go build -v ./...
+      - go mod vendor
+
+  - name: test
+    image: golang:1.13.0-alpine3.10
+    volumes:
+      - name: deps
+        path: /go
+    environment:
+      GOPRIVATE: github.com/ParaServices/*
+      CHECKR_TEST_API_KEY:
+        from_secret: checkr-test-api-key
+    depends_on:
+      - build-modules
+    commands:
+      - apk add --no-cache alpine-sdk bash
+      - go test -v ./...
+
+  - name: slack-notification-finish-test
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: slack-webhook
+      channel: ci
+      username: drone
+      template: >
+        <{{ build.link }}|Build #{{ build.number }} {{ build.status }}>
+        on <http://github.com/{{ repo.owner }}/{{ repo.name }}/tree/{{ build.branch }}|
+        {{ repo.name }}:{{ build.branch }}> by @{{ build.author }}
+    depends_on:
+      - test
+    when:
+      status:
+        - success
+        - failure
