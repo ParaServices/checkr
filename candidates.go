@@ -22,7 +22,7 @@ type Candidate struct {
 	LastName                    string     `json:"last_name,omitempty"`
 	MiddleName                  string     `json:"middle_name,omitempty"`
 	MotherMaidenName            string     `json:"mother_maiden_name,omitempty"`
-	Dob                         string     `json:"dob,omitempty"`
+	DOB                         string     `json:"dob,omitempty"`
 	SSN                         string     `json:"ssn,omitempty"`
 	Email                       string     `json:"email,omitempty"`
 	Zipcode                     string     `json:"zipcode,omitempty"`
