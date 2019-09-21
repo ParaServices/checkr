@@ -37,7 +37,7 @@ type Report struct {
 	FACISSearchID                    string     `json:"facis_search_id,omitempty"`
 	FederealCrimeSearchID            string     `json:"federal_crime_search_id,omitempty"`
 	GlobalWatchlistSearchID          string     `json:"global_watchlist_search_id,omitempty"`
-	SexOffenderSearchID              string     `json:"sex_offender_search_id"`
+	SexOffenderSearchID              string     `json:"sex_offender_search_id,omitempty"`
 	NationalCriminalSearchID         string     `json:"national_criminal_search_id,omitempty"`
 	CountyCriminalSearchIDs          []string   `json:"country_criminal_search_ids,omitempty"`
 	PersonalReferenceVerificationIDs []string   `json:"personal_reference_verification_ids,omitempty"`
