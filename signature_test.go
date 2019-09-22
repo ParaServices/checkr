@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSignatureValid(t *testing.T) {
+func TestIsValidSignature(t *testing.T) {
 	testBody := "test-body"
 	req, err := http.NewRequest(http.MethodGet, "/", bytes.NewBuffer([]byte(testBody)))
 	require.NoError(t, err)
@@ -20,7 +20,7 @@ func TestSignatureValid(t *testing.T) {
 
 	req.Header.Add("X-Checkr-Signature", signature)
 
-	valid, err := SignatureValid(req, []byte(apiKey))
+	valid, err := IsValidSignature(req, []byte(apiKey))
 	require.NoError(t, err)
 	require.True(t, valid)
 }

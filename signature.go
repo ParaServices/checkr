@@ -13,7 +13,7 @@ import (
 
 var ErrCheckrHeaderSignatureNotFound = errors.New("Checkr header X-Checkr-Signature not found")
 
-func SignatureValid(req *http.Request, apiKey []byte) (bool, error) {
+func IsValidSignature(req *http.Request, apiKey []byte) (bool, error) {
 	signature := req.Header.Get("X-Checkr-Signature")
 	if signature == "" {
 		return false, ErrCheckrHeaderSignatureNotFound
