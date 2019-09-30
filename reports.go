@@ -39,13 +39,13 @@ type Report struct {
 	GlobalWatchlistSearchID          string     `json:"global_watchlist_search_id,omitempty"`
 	SexOffenderSearchID              string     `json:"sex_offender_search_id,omitempty"`
 	NationalCriminalSearchID         string     `json:"national_criminal_search_id,omitempty"`
+	MotorVehicleReportID             string     `json:"motor_vehicle_report_id,omitempty"`
+	ProgramID                        string     `json:"program_id,omitempty"`
 	CountyCriminalSearchIDs          []string   `json:"country_criminal_search_ids,omitempty"`
 	PersonalReferenceVerificationIDs []string   `json:"personal_reference_verification_ids,omitempty"`
-	MotorVehicleReportID             string     `json:"motor_vehicle_report_id,omitempty"`
-	StateCriminalSearches            []string   `json:"state_criminal_searches,omitempty"`
+	StateCriminalSearchesIDs         []string   `json:"state_criminal_search_ids,omitempty"`
 	DocumentIDs                      []string   `json:"document_ids,omitempty"`
 	GeoIDs                           []string   `json:"geo_ids,omitempty"`
-	ProgramID                        string     `json:"program_id,omitempty"`
 }
 
 const createReportPath = "/reports"
