@@ -43,7 +43,7 @@ type Report struct {
 	ProgramID                        string     `json:"program_id,omitempty"`
 	CountyCriminalSearchIDs          []string   `json:"country_criminal_search_ids,omitempty"`
 	PersonalReferenceVerificationIDs []string   `json:"personal_reference_verification_ids,omitempty"`
-	StateCriminalSearchesIDs         []string   `json:"state_criminal_search_ids,omitempty"`
+	StateCriminalSearchIDs           []string   `json:"state_criminal_search_ids,omitempty"`
 	DocumentIDs                      []string   `json:"document_ids,omitempty"`
 	GeoIDs                           []string   `json:"geo_ids,omitempty"`
 }
