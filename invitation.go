@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// Invitiation ...
+// Invitation ...
 type Invitation struct {
 	ID            string     `json:"id,omitempty"`
 	Object        string     `json:"object,omitempty"`
@@ -32,11 +32,11 @@ type CreateInvitationRequest struct {
 	Package     string `json:"package,omitempty"`
 }
 
-const createInvitiation = "/invitations"
+const createInvitation = "/invitations"
 
 // CreateInvitation ...
 func (c *Client) CreateInvitation(reqPayload *CreateInvitationRequest) (*Invitation, error) {
-	rel, err := url.Parse(createInvitiation)
+	rel, err := url.Parse(createInvitation)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (c *Client) CreateInvitation(reqPayload *CreateInvitationRequest) (*Invitat
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Conent-Type", "application/json")
+	req.Header.Add("Content-Type", "application/json")
 	req.SetBasicAuth(c.APIKey, "")
 
 	resp, err := c.client.Do(req)
@@ -84,4 +84,56 @@ func (c *Client) CreateInvitation(reqPayload *CreateInvitationRequest) (*Invitat
 	}
 
 	return createResp, nil
+}
+
+const getInvitation = "/invitations"
+
+func (c *Client) GetInvitation(invitationID string) (*Invitation, error) {
+	rel, err := url.Parse(getInvitation)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), invitationID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &Invitation{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
 }
