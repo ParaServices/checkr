@@ -38,6 +38,11 @@ type Candidate struct {
 	GeoIDs                      []string   `json:"geo_ids,omitempty"`
 }
 
+// Unmarshal ...
+func (c *Candidate) Unmarshal(b []byte) error {
+	return json.Unmarshal(b, &c)
+}
+
 type CreateCandidateRequest struct {
 	CustomID                    string `json:"custom_id,omitempty"`
 	LastName                    string `json:"last_name,omitempty"`

@@ -26,6 +26,11 @@ type Invitation struct {
 	ReportID      string     `json:"report_id,omitempty"`
 }
 
+// Unmarshal ...
+func (i *Invitation) Unmarshal(b []byte) error {
+	return json.Unmarshal(b, &i)
+}
+
 // CreateInvitationRequest ...
 type CreateInvitationRequest struct {
 	CandidateID string `json:"candidate_id,omitempty"`

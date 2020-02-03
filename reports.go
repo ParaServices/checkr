@@ -48,6 +48,11 @@ type Report struct {
 	GeoIDs                           []string   `json:"geo_ids,omitempty"`
 }
 
+// Unmarshal ...
+func (r *Report) Unmarshal(b []byte) error {
+	return json.Unmarshal(b, &r)
+}
+
 const createReportPath = "/reports"
 
 func (c *Client) CreateReport(reqPayload *CreateReportRequest) (*Report, error) {
