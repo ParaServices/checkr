@@ -43,7 +43,7 @@ type ClientOpts struct {
 	}
 }
 
-const defaultBaseURL = "https://api.checkr.com/v1/"
+const defaultBaseURL = "https://api.checkr.com/"
 
 // NewClient ...
 func NewClient(opts *ClientOpts) (*Client, error) {

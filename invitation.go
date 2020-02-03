@@ -37,7 +37,7 @@ type CreateInvitationRequest struct {
 	Package     string `json:"package,omitempty"`
 }
 
-const createInvitation = "/invitations"
+const createInvitation = "/v1/invitations"
 
 // CreateInvitation ...
 func (c *Client) CreateInvitation(reqPayload *CreateInvitationRequest) (*Invitation, error) {
@@ -91,7 +91,7 @@ func (c *Client) CreateInvitation(reqPayload *CreateInvitationRequest) (*Invitat
 	return createResp, nil
 }
 
-const getInvitation = "/invitations"
+const getInvitation = "/v1/invitations"
 
 func (c *Client) GetInvitation(invitationID string) (*Invitation, error) {
 	rel, err := url.Parse(getInvitation)

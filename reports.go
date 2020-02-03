@@ -53,7 +53,7 @@ func (r *Report) Unmarshal(b []byte) error {
 	return json.Unmarshal(b, &r)
 }
 
-const createReportPath = "/reports"
+const createReportPath = "/v1/reports"
 
 func (c *Client) CreateReport(reqPayload *CreateReportRequest) (*Report, error) {
 	rel, err := url.Parse(createReportPath)

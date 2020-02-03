@@ -63,7 +63,7 @@ type CreateCandidateRequest struct {
 	Adjucation                  string `json:"adjudication,omitempty"`
 }
 
-const createCandidatePath = "/candidates"
+const createCandidatePath = "/v1/candidates"
 
 func (c *Client) CreateCandidate(reqPayload *CreateCandidateRequest) (*Candidate, error) {
 	rel, err := url.Parse(createCandidatePath)

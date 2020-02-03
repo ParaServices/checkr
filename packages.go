@@ -34,7 +34,7 @@ type ListPackagesResponse struct {
 	Count        int       `json:"count,omitempty"`
 }
 
-const listPackagesPath = "/packages"
+const listPackagesPath = "/v1/packages"
 
 func (c *Client) ListPackages() (*ListPackagesResponse, error) {
 	rel, err := url.Parse(listPackagesPath)
