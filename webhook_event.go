@@ -59,7 +59,7 @@ func (w *WebhookEvent) GetReport(c *Client, u Unmarshaler) error {
 	baseURL := *c.BaseURL
 	baseURL.Path = path.Join(baseURL.Path, rel.String())
 
-	req, err := http.NewRequest(http.MethodPost, baseURL.String(), nil)
+	req, err := http.NewRequest(http.MethodGet, baseURL.String(), nil)
 	if err != nil {
 		return err
 	}
