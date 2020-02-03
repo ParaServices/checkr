@@ -71,9 +71,9 @@ func (w *WebhookEvent) GetReport(c *Client, u Unmarshaler) error {
 		return err
 	}
 
-	if resp.StatusCode != http.StatusCreated {
+	if resp.StatusCode != http.StatusOK {
 		return NewError([]int{
-			http.StatusCreated,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
