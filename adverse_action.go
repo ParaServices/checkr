@@ -41,7 +41,7 @@ type CreateAdverseActionRequest struct {
 	AdverseItemIds        []string  `json:"adverse_item_ids"`
 }
 
-const createAdverseAction = "/v1/report/%s/adverse_actions"
+const createAdverseAction = "/v1/reports/%s/adverse_actions"
 
 // CreateAdverseActionRequest ...
 func (c *Client) CreateAdverseActionRequest(reportID string, reqPayload *CreateAdverseActionRequest) (*AdverseAction, error) {
