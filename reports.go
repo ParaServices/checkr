@@ -53,6 +53,539 @@ func (r *Report) Unmarshal(b []byte) error {
 	return json.Unmarshal(b, &r)
 }
 
+const ssnTracePath = "/v1/ssn_traces"
+
+func (r* Report) GetSSNTrace(ssnTraceID string, c* Client) (*SSNTrace ,error){
+	rel, err := url.Parse(ssnTracePath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), ssnTraceID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &SSNTrace{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+const sexOffenderSearchPath = "/v1/sex_offender_searches"
+
+func (r* Report) GetSexOffenderSearch(sexOffenderSearchID string, c* Client) (*SexOffenderSearch ,error){
+	rel, err := url.Parse(sexOffenderSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), sexOffenderSearchID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &SexOffenderSearch{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+const globalWatchListSearchPath = "/v1/global_watchlist_searches"
+
+func (r* Report) GetGlobalWatchListSearchPath(globalWatchlistSearchID string, c* Client) (*GlobalWatchListSearch ,error){
+	rel, err := url.Parse(globalWatchListSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), globalWatchlistSearchID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &GlobalWatchListSearch{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+
+const nationalCriminalSearchPath = "/v1/national_criminal_searches"
+
+func (r* Report) GetNationalCriminalSearchPath(nationalCriminalSearchID string, c* Client) (*NationalCriminalSearch ,error){
+	rel, err := url.Parse(nationalCriminalSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), nationalCriminalSearchID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &NationalCriminalSearch{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+const federalCriminalSearchPath = "/v1/federal_criminal_searches"
+
+func (r* Report) GetFederalCriminalSearchPath(federalCrimeSearchID string, c* Client) (*FederalCriminalSearch ,error){
+	rel, err := url.Parse(federalCriminalSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), federalCrimeSearchID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &FederalCriminalSearch{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+const countryCriminalSearchPath = "/v1/county_criminal_searches"
+
+func (r* Report) GetCountryCriminalSearchPath(countryCriminalSearchID string, c* Client) (*CountryCriminalSearch ,error){
+	rel, err := url.Parse(countryCriminalSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), countryCriminalSearchID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &CountryCriminalSearch{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+const motorVehicleReportSearchPath = "/v1/motor_vehicle_reports"
+
+func (r* Report) GetMotorVehicleReportSearchPath(motorVehicleReportID string, c* Client) (*MotorVehicleReport ,error){
+	rel, err := url.Parse(motorVehicleReportSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), motorVehicleReportID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &MotorVehicleReport{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+
+const educationVerificationSearchPath = "/v1/education_verifications"
+
+func (r* Report) GetEducationVerificationSearchPath(educationVerificationID string, c* Client) (*EducationVerification ,error){
+	rel, err := url.Parse(educationVerificationSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), educationVerificationID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &EducationVerification{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+
+const employmentVerificationSearchPath = "/v1/employment_verifications"
+
+func (r* Report) GetEmploymentVerificationSearchPath(employmentVerificationID string, c* Client) (*EmploymentVerification ,error){
+	rel, err := url.Parse(employmentVerificationSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), employmentVerificationID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &EmploymentVerification{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+const identityDocumentVerificationSearchPath = "/v1/identity_document_verifications"
+
+func (r* Report) GetIdentityDocumentSearchPath(identityDocumentVerificationID string, c* Client) (*IdentityDocumentVerification ,error){
+	rel, err := url.Parse(identityDocumentVerificationSearchPath)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), identityDocumentVerificationID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &IdentityDocumentVerification{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+
+
+
+
+
+
+
+
+
+
 const createReportPath = "/v1/reports"
 
 func (c *Client) CreateReport(reqPayload *CreateReportRequest) (*Report, error) {
@@ -105,3 +638,58 @@ func (c *Client) CreateReport(reqPayload *CreateReportRequest) (*Report, error) 
 
 	return createResp, nil
 }
+
+const getReport = "/v1/reports"
+
+// GetReport Retrieves a report
+func (c *Client) GetReport(reportID string) (*Report, error) {
+	rel, err := url.Parse(getReport)
+	if err != nil {
+		return nil, err
+	}
+
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.String(), reportID)
+
+	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.SetBasicAuth(c.APIKey, "")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, NewError([]int{
+			http.StatusCreated,
+		}, resp)
+	}
+	defer func() {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	getResp := &Report{}
+	err = json.Unmarshal(b, getResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return getResp, nil
+}
+
+
