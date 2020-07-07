@@ -13,21 +13,21 @@ import (
 
 // AdverseAction ...
 type AdverseAction struct {
-	ID                    string      `json:"id"`
-	Object                string      `json:"object"`
-	URI                   string      `json:"uri"`
-	CreatedAt             time.Time   `json:"created_at"`
-	Status                string      `json:"status"`
-	ReportID              string      `json:"report_id"`
-	PostNoticeScheduledAt time.Time   `json:"post_notice_scheduled_at"`
-	PostNoticeReadyAt     time.Time   `json:"post_notice_ready_at"`
-	CanceledAt            interface{} `json:"canceled_at"`
+	ID                    string    `json:"id,omitempty"`
+	Object                string    `json:"object,omitempty"`
+	URI                   string    `json:"uri,omitempty"`
+	CreatedAt             time.Time `json:"created_at,omitempty"`
+	Status                string    `json:"status,omitempty"`
+	ReportID              string    `json:"report_id,omitempty"`
+	PostNoticeScheduledAt time.Time `json:"post_notice_scheduled_at,omitempty"`
+	PostNoticeReadyAt     time.Time `json:"post_notice_ready_at,omitempty"`
+	CanceledAt            time.Time    `json:"canceled_at,omitempty"`
 	AdverseItems          []struct {
-		ID     string `json:"id"`
-		Object string `json:"object"`
-		Text   string `json:"text"`
-	} `json:"adverse_items"`
-	IndividualizedAssessmentEngaged bool `json:"individualized_assessment_engaged"`
+		ID     string `json:"id,omitempty"`
+		Object string `json:"object,omitempty"`
+		Text   string `json:"text,omitempty"`
+	} `json:"adverse_items,omitempty"`
+	IndividualizedAssessmentEngaged bool `json:"individualized_assessment_engaged,omitempty"`
 }
 
 // Unmarshal ...
@@ -37,8 +37,8 @@ func (a *AdverseAction) Unmarshal(b []byte) error {
 
 // CreateAdverseActionRequest ...
 type CreateAdverseActionRequest struct {
-	PostNoticeScheduledAt time.Time `json:"post_notice_scheduled_at"`
-	AdverseItemIds        []string  `json:"adverse_item_ids"`
+	PostNoticeScheduledAt time.Time `json:"post_notice_scheduled_at,omitempty"`
+	AdverseItemIds        []string  `json:"adverse_item_ids,omitempty"`
 }
 
 const createAdverseAction = "/v1/reports/%s/adverse_actions"
