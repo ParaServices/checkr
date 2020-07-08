@@ -1,6 +1,7 @@
 package checkr
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/icrowley/fake"
@@ -19,7 +20,14 @@ func TestClient_CreateCandidate(t *testing.T) {
 	reqPayload.CustomID = customID
 	reqPayload.LastName = fake.LastName()
 	reqPayload.FirstName = fake.FirstName()
-	reqPayload.Email = fake.EmailAddress()
+	email := ""
+	for {
+		email = fake.EmailAddress()
+		if strings.HasSuffix(email, ".com") {
+			break
+		}
+	}
+	reqPayload.Email = email
 	resp, err := client.CreateCandidate(&reqPayload)
 	require.NoError(t, err)
 	require.NotNil(t, resp)

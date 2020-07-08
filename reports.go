@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -35,7 +36,7 @@ type Report struct {
 	SSNTraceID                       string     `json:"ssn_trace_id,omitempty"`
 	ArrestSearchID                   string     `json:"arrest_search_id,omitempty"`
 	FACISSearchID                    string     `json:"facis_search_id,omitempty"`
-	FederalCrimeSearchID            string     `json:"federal_crime_search_id,omitempty"`
+	FederalCrimeSearchID             string     `json:"federal_crime_search_id,omitempty"`
 	GlobalWatchlistSearchID          string     `json:"global_watchlist_search_id,omitempty"`
 	SexOffenderSearchID              string     `json:"sex_offender_search_id,omitempty"`
 	NationalCriminalSearchID         string     `json:"national_criminal_search_id,omitempty"`
@@ -46,7 +47,7 @@ type Report struct {
 	StateCriminalSearchIDs           []string   `json:"state_criminal_search_ids,omitempty"`
 	DocumentIDs                      []string   `json:"document_ids,omitempty"`
 	GeoIDs                           []string   `json:"geo_ids,omitempty"`
-	IdentityDocumentVerificationID 	 string 	`json:"identity_document_verification_id"`
+	IdentityDocumentVerificationID   string     `json:"identity_document_verification_id"`
 }
 
 // Unmarshal ...
@@ -56,7 +57,7 @@ func (r *Report) Unmarshal(b []byte) error {
 
 const ssnTracePath = "/v1/ssn_traces"
 
-func (r* Report) GetSSNTrace(ssnTraceID string, c* Client) (*SSNTrace ,error){
+func (r *Report) GetSSNTrace(ssnTraceID string, c *Client) (*SSNTrace, error) {
 	rel, err := url.Parse(ssnTracePath)
 	if err != nil {
 		return nil, err
@@ -108,7 +109,7 @@ func (r* Report) GetSSNTrace(ssnTraceID string, c* Client) (*SSNTrace ,error){
 
 const sexOffenderSearchPath = "/v1/sex_offender_searches"
 
-func (r* Report) GetSexOffenderSearch(sexOffenderSearchID string, c* Client) (*SexOffenderSearch ,error){
+func (r *Report) GetSexOffenderSearch(sexOffenderSearchID string, c *Client) (*SexOffenderSearch, error) {
 	rel, err := url.Parse(sexOffenderSearchPath)
 	if err != nil {
 		return nil, err
@@ -160,7 +161,7 @@ func (r* Report) GetSexOffenderSearch(sexOffenderSearchID string, c* Client) (*S
 
 const globalWatchListSearchPath = "/v1/global_watchlist_searches"
 
-func (r* Report) GetGlobalWatchListSearch(globalWatchlistSearchID string, c* Client) (*GlobalWatchListSearch ,error){
+func (r *Report) GetGlobalWatchListSearch(globalWatchlistSearchID string, c *Client) (*GlobalWatchListSearch, error) {
 	rel, err := url.Parse(globalWatchListSearchPath)
 	if err != nil {
 		return nil, err
@@ -210,10 +211,9 @@ func (r* Report) GetGlobalWatchListSearch(globalWatchlistSearchID string, c* Cli
 	return getResp, nil
 }
 
-
 const nationalCriminalSearchPath = "/v1/national_criminal_searches"
 
-func (r* Report) GetNationalCriminalSearch(nationalCriminalSearchID string, c* Client) (*NationalCriminalSearch ,error){
+func (r *Report) GetNationalCriminalSearch(nationalCriminalSearchID string, c *Client) (*NationalCriminalSearch, error) {
 	rel, err := url.Parse(nationalCriminalSearchPath)
 	if err != nil {
 		return nil, err
@@ -265,7 +265,7 @@ func (r* Report) GetNationalCriminalSearch(nationalCriminalSearchID string, c* C
 
 const federalCriminalSearchPath = "/v1/federal_criminal_searches"
 
-func (r* Report) GetFederalCriminalSearch(federalCrimeSearchID string, c* Client) (*FederalCriminalSearch ,error){
+func (r *Report) GetFederalCriminalSearch(federalCrimeSearchID string, c *Client) (*FederalCriminalSearch, error) {
 	rel, err := url.Parse(federalCriminalSearchPath)
 	if err != nil {
 		return nil, err
@@ -317,7 +317,7 @@ func (r* Report) GetFederalCriminalSearch(federalCrimeSearchID string, c* Client
 
 const countryCriminalSearchPath = "/v1/county_criminal_searches"
 
-func (r* Report) GetCountryCriminalSearch(countryCriminalSearchID string, c* Client) (*CountryCriminalSearch ,error){
+func (r *Report) GetCountryCriminalSearch(countryCriminalSearchID string, c *Client) (*CountryCriminalSearch, error) {
 	rel, err := url.Parse(countryCriminalSearchPath)
 	if err != nil {
 		return nil, err
@@ -369,7 +369,7 @@ func (r* Report) GetCountryCriminalSearch(countryCriminalSearchID string, c* Cli
 
 const stateCriminalSearchPath = "/v1/state_criminal_searches"
 
-func (r* Report) GetStateCriminalSearch(stateCriminalSearchID string, c* Client) (*StateCriminalSearch ,error){
+func (r *Report) GetStateCriminalSearch(stateCriminalSearchID string, c *Client) (*StateCriminalSearch, error) {
 	rel, err := url.Parse(stateCriminalSearchPath)
 	if err != nil {
 		return nil, err
@@ -421,7 +421,7 @@ func (r* Report) GetStateCriminalSearch(stateCriminalSearchID string, c* Client)
 
 const motorVehicleReportSearchPath = "/v1/motor_vehicle_reports"
 
-func (r* Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c* Client) (*MotorVehicleReport ,error){
+func (r *Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c *Client) (*MotorVehicleReport, error) {
 	rel, err := url.Parse(motorVehicleReportSearchPath)
 	if err != nil {
 		return nil, err
@@ -462,6 +462,8 @@ func (r* Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c* Cli
 		return nil, err
 	}
 
+	log.Println("the mtoro vehicle rpeort is", string(b))
+
 	getResp := &MotorVehicleReport{}
 	err = json.Unmarshal(b, getResp)
 	if err != nil {
@@ -471,10 +473,9 @@ func (r* Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c* Cli
 	return getResp, nil
 }
 
-
 const educationVerificationSearchPath = "/v1/education_verifications"
 
-func (r* Report) GetEducationVerificationSearch(educationVerificationID string, c* Client) (*EducationVerification ,error){
+func (r *Report) GetEducationVerificationSearch(educationVerificationID string, c *Client) (*EducationVerification, error) {
 	rel, err := url.Parse(educationVerificationSearchPath)
 	if err != nil {
 		return nil, err
@@ -524,10 +525,9 @@ func (r* Report) GetEducationVerificationSearch(educationVerificationID string, 
 	return getResp, nil
 }
 
-
 const employmentVerificationSearchPath = "/v1/employment_verifications"
 
-func (r* Report) GetEmploymentVerificationSearch(employmentVerificationID string, c* Client) (*EmploymentVerification ,error){
+func (r *Report) GetEmploymentVerificationSearch(employmentVerificationID string, c *Client) (*EmploymentVerification, error) {
 	rel, err := url.Parse(employmentVerificationSearchPath)
 	if err != nil {
 		return nil, err
@@ -579,7 +579,7 @@ func (r* Report) GetEmploymentVerificationSearch(employmentVerificationID string
 
 const identityDocumentVerificationSearchPath = "/v1/identity_document_verifications"
 
-func (r* Report) GetIdentityDocumentSearch(identityDocumentVerificationID string, c* Client) (*IdentityDocumentVerification ,error){
+func (r *Report) GetIdentityDocumentSearch(identityDocumentVerificationID string, c *Client) (*IdentityDocumentVerification, error) {
 	rel, err := url.Parse(identityDocumentVerificationSearchPath)
 	if err != nil {
 		return nil, err
@@ -628,8 +628,6 @@ func (r* Report) GetIdentityDocumentSearch(identityDocumentVerificationID string
 
 	return getResp, nil
 }
-
-
 
 const createReportPath = "/v1/reports"
 
@@ -739,20 +737,16 @@ func (c *Client) GetReport(reportID string) (*Report, error) {
 	report.GetGlobalWatchListSearch(report.GlobalWatchlistSearchID, c)
 	report.GetNationalCriminalSearch(report.NationalCriminalSearchID, c)
 	report.GetFederalCriminalSearch(report.FederalCrimeSearchID, c)
-	for _,countyCriminalSearchID:= range report.CountyCriminalSearchIDs{
+	for _, countyCriminalSearchID := range report.CountyCriminalSearchIDs {
 		report.GetCountryCriminalSearch(countyCriminalSearchID, c)
 	}
-	for _,stateCriminalSearchID:= range report.StateCriminalSearchIDs{
+	for _, stateCriminalSearchID := range report.StateCriminalSearchIDs {
 		report.GetStateCriminalSearch(stateCriminalSearchID, c)
 	}
 	report.GetMotorVehicleReportSearch(report.MotorVehicleReportID, c)
 	// report.GetEducationVerificationSearchPath(report.MotorVehicleReportID, c)
 	// report.GetEmploymentVerificationSearchPath(report.SSNTraceID, c)
 	report.GetIdentityDocumentSearch(report.IdentityDocumentVerificationID, c)
-	
-
 
 	return report, nil
 }
-
-

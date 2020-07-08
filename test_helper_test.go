@@ -1,8 +1,10 @@
 package checkr
 
 import (
+	"log"
 	"math/rand"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -37,11 +39,22 @@ func createCandidate(t *testing.T) *Candidate {
 	reqPayload.CustomID = customID
 	reqPayload.LastName = fake.LastName()
 	reqPayload.FirstName = fake.LastName()
-	reqPayload.Email = fake.EmailAddress()
+	email := ""
+	for {
+		email =fake.EmailAddress()
+		if strings.HasSuffix(email, ".com"){
+			break
+		}
+	}
+	// reqPayload.Email = "cAustin@Edgeclub.com"
+	reqPayload.Email = email
 	reqPayload.DOB = "1990-02-14"
 	reqPayload.SSN = randata.RandomSSN(false, 1000)
 	reqPayload.ZipCode = "60616"
+	reqPayload.DriverLicenseNumber = "Y2367382"
+	reqPayload.DriverLicenseState = "CA"
 	resp, err := client.CreateCandidate(&reqPayload)
+	log.Println("the emaild address is",reqPayload.Email)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	return resp
