@@ -13,29 +13,29 @@ import (
 // Candidate ...
 // https://docs.checkr.com/#section/Getting-Started/Create-a-Candidate
 type Candidate struct {
-	ID                          string     `json:"id,omitempty"`
-	CustomID                    string     `json:"custom_id,omitempty"`
-	Object                      string     `json:"object,omitempty"`
-	URI                         string     `json:"uri,omitempty"`
+	ID                          string      `json:"id,omitempty"`
+	CustomID                    string      `json:"custom_id,omitempty"`
+	Object                      string      `json:"object,omitempty"`
+	URI                         string      `json:"uri,omitempty"`
 	CreatedAt                   *time.Time `json:"created_at,omitempty"`
-	FirstName                   string     `json:"first_name,omitempty"`
-	LastName                    string     `json:"last_name,omitempty"`
-	MiddleName                  string     `json:"middle_name,omitempty"`
-	MotherMaidenName            string     `json:"mother_maiden_name,omitempty"`
-	DOB                         string     `json:"dob,omitempty"`
-	SSN                         string     `json:"ssn,omitempty"`
-	Email                       string     `json:"email,omitempty"`
-	Zipcode                     string     `json:"zipcode,omitempty"`
-	Phone                       string     `json:"phone,omitempty"`
-	DriverLicenseState          string     `json:"driver_license_state,omitempty"`
-	DriverLicenseNumber         string     `json:"driver_license_number,omitempty"`
-	CopyRequested               bool       `json:"copy_requested,omitempty"`
-	PreviousDriverLicenseState  string     `json:"previous_driver_license_state,omitempty"`
-	PreviousDriverLicenseNumber string     `json:"previous_driver_license_number,omitempty"`
-	Adjudication                string     `json:"adjudication,omitempty"`
-	NoMiddleName                bool       `json:"no_middle_name,omitempty"`
-	ReportIDs                   []string   `json:"report_ids,omitempty"`
-	GeoIDs                      []string   `json:"geo_ids,omitempty"`
+	FirstName                   string      `json:"first_name,omitempty"`
+	LastName                    string      `json:"last_name,omitempty"`
+	MiddleName                  string      `json:"middle_name,omitempty"`
+	MotherMaidenName            string      `json:"mother_maiden_name,omitempty"`
+	DOB                         *time.Time  `json:"dob,omitempty"`
+	SSN                         string      `json:"ssn,omitempty"`
+	Email                       string      `json:"email,omitempty"`
+	Zipcode                     string      `json:"zipcode,omitempty"`
+	Phone                       string      `json:"phone,omitempty"`
+	DriverLicenseState          string      `json:"driver_license_state,omitempty"`
+	DriverLicenseNumber         string      `json:"driver_license_number,omitempty"`
+	CopyRequested               bool        `json:"copy_requested,omitempty"`
+	PreviousDriverLicenseState  string      `json:"previous_driver_license_state,omitempty"`
+	PreviousDriverLicenseNumber string      `json:"previous_driver_license_number,omitempty"`
+	Adjudication                string      `json:"adjudication,omitempty"`
+	NoMiddleName                bool        `json:"no_middle_name,omitempty"`
+	ReportIDs                   []string    `json:"report_ids,omitempty"`
+	GeoIDs                      []string    `json:"geo_ids,omitempty"`
 }
 
 // Unmarshal ...
@@ -44,23 +44,23 @@ func (c *Candidate) Unmarshal(b []byte) error {
 }
 
 type CreateCandidateRequest struct {
-	CustomID                    string `json:"custom_id,omitempty"`
-	LastName                    string `json:"last_name,omitempty"`
-	FirstName                   string `json:"first_name,omitempty"`
-	MiddleName                  string `json:"middle_name,omitempty"`
-	MotherMaidenName            string `json:"mother_maiden_name,omitempty"`
-	NoMiddleName                bool   `json:"no_middle_name,omitempty"`
-	Email                       string `json:"email,omitempty"`
-	Phone                       string `json:"phone,omitempty"`
-	ZipCode                     string `json:"zipcode,omitempty"`
-	DOB                         string `json:"dob,omitempty"`
-	SSN                         string `json:"ssn,omitempty"`
-	DriverLicenseNumber         string `json:"driver_license_number,omitempty"`
-	DriverLicenseState          string `json:"driver_license_state,omitempty"`
-	PreviousDriverLicenseNumber string `json:"previous_driver_license_number,omitempty"`
-	PreviousDriverLicenseState  string `json:"previous_driver_license_state,omitempty"`
-	CopyRequested               bool   `json:"copy_requested,omitempty"`
-	Adjucation                  string `json:"adjudication,omitempty"`
+	CustomID                    string     `json:"custom_id,omitempty"`
+	LastName                    string     `json:"last_name,omitempty"`
+	FirstName                   string     `json:"first_name,omitempty"`
+	MiddleName                  string     `json:"middle_name,omitempty"`
+	MotherMaidenName            string     `json:"mother_maiden_name,omitempty"`
+	NoMiddleName                bool       `json:"no_middle_name,omitempty"`
+	Email                       string     `json:"email,omitempty"`
+	Phone                       string     `json:"phone,omitempty"`
+	ZipCode                     string     `json:"zipcode,omitempty"`
+	DOB                         *time.Time `json:"dob,omitempty"`
+	SSN                         string     `json:"ssn,omitempty"`
+	DriverLicenseNumber         string     `json:"driver_license_number,omitempty"`
+	DriverLicenseState          string     `json:"driver_license_state,omitempty"`
+	PreviousDriverLicenseNumber string     `json:"previous_driver_license_number,omitempty"`
+	PreviousDriverLicenseState  string     `json:"previous_driver_license_state,omitempty"`
+	CopyRequested               bool       `json:"copy_requested,omitempty"`
+	Adjucation                  string     `json:"adjudication,omitempty"`
 }
 
 const createCandidatePath = "/v1/candidates"

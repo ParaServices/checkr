@@ -13,15 +13,15 @@ import (
 
 // AdverseAction ...
 type AdverseAction struct {
-	ID                    string    `json:"id,omitempty"`
-	Object                string    `json:"object,omitempty"`
-	URI                   string    `json:"uri,omitempty"`
-	CreatedAt             time.Time `json:"created_at,omitempty"`
-	Status                string    `json:"status,omitempty"`
-	ReportID              string    `json:"report_id,omitempty"`
-	PostNoticeScheduledAt time.Time `json:"post_notice_scheduled_at,omitempty"`
-	PostNoticeReadyAt     time.Time `json:"post_notice_ready_at,omitempty"`
-	CanceledAt            time.Time    `json:"canceled_at,omitempty"`
+	ID                    string     `json:"id,omitempty"`
+	Object                string     `json:"object,omitempty"`
+	URI                   string     `json:"uri,omitempty"`
+	CreatedAt             *time.Time `json:"created_at,omitempty"`
+	Status                string     `json:"status,omitempty"`
+	ReportID              string     `json:"report_id,omitempty"`
+	PostNoticeScheduledAt *time.Time `json:"post_notice_scheduled_at,omitempty"`
+	PostNoticeReadyAt     *time.Time `json:"post_notice_ready_at,omitempty"`
+	CanceledAt            *time.Time `json:"canceled_at,omitempty"`
 	AdverseItems          []struct {
 		ID     string `json:"id,omitempty"`
 		Object string `json:"object,omitempty"`
@@ -37,8 +37,8 @@ func (a *AdverseAction) Unmarshal(b []byte) error {
 
 // CreateAdverseActionRequest ...
 type CreateAdverseActionRequest struct {
-	PostNoticeScheduledAt time.Time `json:"post_notice_scheduled_at,omitempty"`
-	AdverseItemIds        []string  `json:"adverse_item_ids,omitempty"`
+	PostNoticeScheduledAt *time.Time `json:"post_notice_scheduled_at,omitempty"`
+	AdverseItemIds        []string   `json:"adverse_item_ids,omitempty"`
 }
 
 const createAdverseAction = "/v1/reports/%s/adverse_actions"

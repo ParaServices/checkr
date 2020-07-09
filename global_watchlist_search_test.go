@@ -10,14 +10,14 @@ func TestClient_GetGlobalWatchListSearch(t *testing.T) {
 	candidate := createCandidate(t)
 	reqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
-		Package:     driverpackage,
+		Package:     driverPro,
 	}
 	client := newClient(t)
 	rpt, err := client.CreateReport(reqPayload)
 	require.NoError(t, err)
 	require.NotNil(t, rpt)
-	ssnTrace, err := rpt.GetGlobalWatchListSearch(rpt.GlobalWatchlistSearchID, client)
+	gbSearch, err := rpt.GetGlobalWatchListSearch(rpt.GlobalWatchlistSearchID, client)
 	require.NoError(t, err)
-	require.NotEmpty(t, ssnTrace)
+	require.NotEmpty(t, gbSearch)
 
 }

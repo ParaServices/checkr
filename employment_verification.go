@@ -8,13 +8,13 @@ import (
 // EmploymentVerification ...
 // https://docs.checkr.com/#operation/getEmploymentVerification
 type EmploymentVerification struct {
-	ID             string    `json:"id,omitempty"`
-	Object         string    `json:"object,omitempty"`
-	URI            string    `json:"uri,omitempty"`
-	Status         string    `json:"status,omitempty"`
-	CreatedAt      time.Time `json:"created_at,omitempty"`
-	CompletedAt    time.Time `json:"completed_at,omitempty"`
-	TurnaroundTime int       `json:"turnaround_time,omitempty"`
+	ID             string     `json:"id,omitempty"`
+	Object         string     `json:"object,omitempty"`
+	URI            string     `json:"uri,omitempty"`
+	Status         string     `json:"status,omitempty"`
+	CreatedAt      *time.Time `json:"created_at,omitempty"`
+	CompletedAt    *time.Time `json:"completed_at,omitempty"`
+	TurnaroundTime int        `json:"turnaround_time,omitempty"`
 	Records        []struct {
 		ID     string `json:"id,omitempty"`
 		Result struct {
@@ -78,9 +78,9 @@ type EmploymentVerification struct {
 			} `json:"manager,omitempty"`
 		} `json:"employer,omitempty"`
 		Events []struct {
-			Text      string    `json:"text,omitempty"`
-			CreatedAt time.Time `json:"created_at,omitempty"`
-			Type      string    `json:"type,omitempty"`
+			Text      string     `json:"text,omitempty"`
+			CreatedAt *time.Time `json:"created_at,omitempty"`
+			Type      string     `json:"type,omitempty"`
 		} `json:"events,omitempty"`
 		Status string `json:"status,omitempty"`
 	} `json:"records,omitempty"`

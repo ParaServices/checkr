@@ -10,14 +10,14 @@ import (
 )
 
 type Package struct {
-	ID         string    `json:"id,omitempty"`
-	Object     string    `json:"object,omitempty"`
-	URI        string    `json:"uri,omitempty"`
-	CreatedAt  time.Time `json:"created_at,omitempty"`
-	DeletedAt  time.Time `json:"deleted_at,omitempty"`
-	Name       string    `json:"name,omitempty"`
-	Slug       string    `json:"slug,omitempty"`
-	Price      int       `json:"price,omitempty"`
+	ID         string     `json:"id,omitempty"`
+	Object     string     `json:"object,omitempty"`
+	URI        string     `json:"uri,omitempty"`
+	CreatedAt  *time.Time `json:"created_at,omitempty"`
+	DeletedAt  *time.Time `json:"deleted_at,omitempty"`
+	Name       string     `json:"name,omitempty"`
+	Slug       string     `json:"slug,omitempty"`
+	Price      int        `json:"price,omitempty"`
 	Screenings []struct {
 		Type    string      `json:"type,omitempty"`
 		Subtype interface{} `json:"subtype,omitempty"`

@@ -8,17 +8,17 @@ import (
 // IdentityDocumentVerification ...
 // https://docs.checkr.com/#tag/Identity-Document-Verification
 type IdentityDocumentVerification struct {
-	ID             string    `json:"id"`
-	Object         string    `json:"object"`
-	URI            string    `json:"uri"`
-	Status         string    `json:"status"`
-	CreatedAt      time.Time `json:"created_at"`
-	CompletedAt    time.Time `json:"completed_at"`
-	TurnaroundTime int       `json:"turnaround_time"`
-	Verified       bool      `json:"verified"`
-	CaptureURL     string    `json:"capture_url"`
-	Provider       string    `json:"provider"`
-	DocumentIds    []string  `json:"document_ids"`
+	ID             string     `json:"id"`
+	Object         string     `json:"object"`
+	URI            string     `json:"uri"`
+	Status         string     `json:"status"`
+	CreatedAt      *time.Time `json:"created_at"`
+	CompletedAt    *time.Time `json:"completed_at"`
+	TurnaroundTime int        `json:"turnaround_time"`
+	Verified       bool       `json:"verified"`
+	CaptureURL     string     `json:"capture_url"`
+	Provider       string     `json:"provider"`
+	DocumentIds    []string   `json:"document_ids"`
 	Checks         struct {
 		CandidateDataMatch []struct {
 			Name   string `json:"name"`

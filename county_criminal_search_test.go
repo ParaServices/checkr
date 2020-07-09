@@ -11,7 +11,7 @@ func TestClient_GetCountryCriminalSearch(t *testing.T) {
 	candidate := createCandidate(t)
 	reqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
-		Package:     driverpackage,
+		Package:     driverPro,
 	}
 	client := newClient(t)
 	rpt, err := client.CreateReport(reqPayload)
