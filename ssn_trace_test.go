@@ -6,13 +6,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const driverPro = "driver_pro"
+
 
 func TestClient_GetSSNTrace(t *testing.T) {
 	candidate := createCandidate(t)
 	reqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
-		Package:     driverPro,
+		Package:     DriverPro.Code(),
 	}
 	client := newClient(t)
 	rpt, err := client.CreateReport(reqPayload)

@@ -20,14 +20,9 @@ func TestClient_CreateCandidate(t *testing.T) {
 	reqPayload.CustomID = customID
 	reqPayload.LastName = fake.LastName()
 	reqPayload.FirstName = fake.FirstName()
-	email := ""
-	for {
-		email = fake.EmailAddress()
-		if strings.HasSuffix(email, ".com") {
-			break
-		}
-	}
-	reqPayload.Email = email
+	digit, err := tg.RandGen(5, tg.Digit, "", "")
+	require.NoError(t, err)
+	reqPayload.Email = strings.Join([]string{"testdev", digit, "@joinpara.com"}, "")
 	resp, err := client.CreateCandidate(&reqPayload)
 	require.NoError(t, err)
 	require.NotNil(t, resp)

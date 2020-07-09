@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -19,35 +18,35 @@ type CreateReportRequest struct {
 
 // Report ...
 type Report struct {
-	ID                               string      `json:"id,omitempty"`
-	Object                           string      `json:"object,omitempty"`
-	URI                              string      `json:"uri,omitempty"`
-	Status                           string      `json:"status,omitempty"`
+	ID                               string     `json:"id,omitempty"`
+	Object                           string     `json:"object,omitempty"`
+	URI                              string     `json:"uri,omitempty"`
+	Status                           string     `json:"status,omitempty"`
 	CreatedAt                        *time.Time `json:"created_at,omitempty"`
-	CompletedAt                      string      `json:"completed_at,omitempty"`
-	RevisedAt                        string      `json:"revised_at,omitempty"`
-	UpgradedAt                       string      `json:"upgraded_at,omitempty"`
-	TurnaroundTime                   int         `json:"turnaround_time,omitempty"`
+	CompletedAt                      string     `json:"completed_at,omitempty"`
+	RevisedAt                        string     `json:"revised_at,omitempty"`
+	UpgradedAt                       string     `json:"upgraded_at,omitempty"`
+	TurnaroundTime                   int        `json:"turnaround_time,omitempty"`
 	DueTime                          *time.Time `json:"due_time,omitempty"`
-	Adjudication                     string      `json:"adjudication,omitempty"`
-	Package                          string      `json:"package,omitempty"`
-	Source                           string      `json:"source,omitempty"`
-	CandidateID                      string      `json:"candidate_id,omitempty"`
-	SSNTraceID                       string      `json:"ssn_trace_id,omitempty"`
-	ArrestSearchID                   string      `json:"arrest_search_id,omitempty"`
-	FACISSearchID                    string      `json:"facis_search_id,omitempty"`
-	FederalCrimeSearchID             string      `json:"federal_crime_search_id,omitempty"`
-	GlobalWatchlistSearchID          string      `json:"global_watchlist_search_id,omitempty"`
-	SexOffenderSearchID              string      `json:"sex_offender_search_id,omitempty"`
-	NationalCriminalSearchID         string      `json:"national_criminal_search_id,omitempty"`
-	MotorVehicleReportID             string      `json:"motor_vehicle_report_id,omitempty"`
-	ProgramID                        string      `json:"program_id,omitempty"`
-	CountyCriminalSearchIDs          []string    `json:"country_criminal_search_ids,omitempty"`
-	PersonalReferenceVerificationIDs []string    `json:"personal_reference_verification_ids,omitempty"`
-	StateCriminalSearchIDs           []string    `json:"state_criminal_search_ids,omitempty"`
-	DocumentIDs                      []string    `json:"document_ids,omitempty"`
-	GeoIDs                           []string    `json:"geo_ids,omitempty"`
-	IdentityDocumentVerificationID   string      `json:"identity_document_verification_id"`
+	Adjudication                     string     `json:"adjudication,omitempty"`
+	Package                          string     `json:"package,omitempty"`
+	Source                           string     `json:"source,omitempty"`
+	CandidateID                      string     `json:"candidate_id,omitempty"`
+	SSNTraceID                       string     `json:"ssn_trace_id,omitempty"`
+	ArrestSearchID                   string     `json:"arrest_search_id,omitempty"`
+	FACISSearchID                    string     `json:"facis_search_id,omitempty"`
+	FederalCrimeSearchID             string     `json:"federal_crime_search_id,omitempty"`
+	GlobalWatchlistSearchID          string     `json:"global_watchlist_search_id,omitempty"`
+	SexOffenderSearchID              string     `json:"sex_offender_search_id,omitempty"`
+	NationalCriminalSearchID         string     `json:"national_criminal_search_id,omitempty"`
+	MotorVehicleReportID             string     `json:"motor_vehicle_report_id,omitempty"`
+	ProgramID                        string     `json:"program_id,omitempty"`
+	CountyCriminalSearchIDs          []string   `json:"country_criminal_search_ids,omitempty"`
+	PersonalReferenceVerificationIDs []string   `json:"personal_reference_verification_ids,omitempty"`
+	StateCriminalSearchIDs           []string   `json:"state_criminal_search_ids,omitempty"`
+	DocumentIDs                      []string   `json:"document_ids,omitempty"`
+	GeoIDs                           []string   `json:"geo_ids,omitempty"`
+	IdentityDocumentVerificationID   string     `json:"identity_document_verification_id"`
 }
 
 // Unmarshal ...
@@ -462,8 +461,6 @@ func (r *Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c *Cli
 		return nil, err
 	}
 
-	log.Println("the mtoro vehicle rpeort is", string(b))
-
 	getResp := &MotorVehicleReport{}
 	err = json.Unmarshal(b, getResp)
 	if err != nil {
@@ -732,21 +729,6 @@ func (c *Client) GetReport(reportID string) (*Report, error) {
 		return nil, err
 	}
 
-	report.GetSSNTrace(report.SSNTraceID, c)
-	report.GetSexOffenderSearch(report.SexOffenderSearchID, c)
-	report.GetGlobalWatchListSearch(report.GlobalWatchlistSearchID, c)
-	report.GetNationalCriminalSearch(report.NationalCriminalSearchID, c)
-	report.GetFederalCriminalSearch(report.FederalCrimeSearchID, c)
-	for _, countyCriminalSearchID := range report.CountyCriminalSearchIDs {
-		report.GetCountryCriminalSearch(countyCriminalSearchID, c)
-	}
-	for _, stateCriminalSearchID := range report.StateCriminalSearchIDs {
-		report.GetStateCriminalSearch(stateCriminalSearchID, c)
-	}
-	report.GetMotorVehicleReportSearch(report.MotorVehicleReportID, c)
-	// report.GetEducationVerificationSearchPath(report.MotorVehicleReportID, c)
-	// report.GetEmploymentVerificationSearchPath(report.SSNTraceID, c)
-	report.GetIdentityDocumentSearch(report.IdentityDocumentVerificationID, c)
-
+	
 	return report, nil
 }
