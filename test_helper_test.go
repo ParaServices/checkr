@@ -1,6 +1,7 @@
 package checkr
 
 import (
+	"log"
 	"math/rand"
 	"os"
 	"strings"
@@ -43,6 +44,7 @@ func createCandidate(t *testing.T) *Candidate {
 	reqPayload.Email = strings.Join([]string{"testdev", digit, "@joinpara.com"}, "")
 	reqPayload.DOB = "1990-02-14"
 	reqPayload.SSN = randata.RandomSSN(false, 1000)
+	log.Println("the ssn is", reqPayload.SSN)
 	reqPayload.ZipCode = "60616"
 	reqPayload.DriverLicenseNumber = "Y2367382"
 	reqPayload.DriverLicenseState = "CA"

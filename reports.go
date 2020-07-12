@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
+	"sync"
 	"time"
 )
 
@@ -626,6 +628,127 @@ func (r *Report) GetIdentityDocumentSearch(identityDocumentVerificationID string
 	return getResp, nil
 }
 
+// GetScreenings returns all the screenings for a report
+func (r *Report) GetScreenings(c *Client) (*Screenings, error) {
+	cs := &Screenings{}
+	var err error
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cs.SSNTrace, err = r.GetSSNTrace(r.SSNTraceID, c)
+		if err != nil {
+			log.Println("error getting ssn trace ", err)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cs.SexOffenderSearch, err = r.GetSexOffenderSearch(r.SexOffenderSearchID, c)
+		if err != nil {
+			log.Println("error getting sex offender searches", err)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cs.GlobalWatchListSearch, err = r.GetGlobalWatchListSearch(r.GlobalWatchlistSearchID, c)
+		if err != nil {
+			log.Println("error getting global watch list searches", err)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cs.NationalCriminalSearch, err = r.GetNationalCriminalSearch(r.NationalCriminalSearchID, c)
+		if err != nil {
+			log.Println("error getting national criminal searches", err)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cs.FederalCriminalSearch, err = r.GetFederalCriminalSearch(r.FederalCrimeSearchID, c)
+		if err != nil {
+			log.Println("error getting federal criminal search", err)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for _, countyCriminalSearchID := range r.CountyCriminalSearchIDs {
+			ccs, err := r.GetCountryCriminalSearch(countyCriminalSearchID, c)
+			if err != nil {
+				log.Println("error getting country criminal searches", err)
+				continue
+			}
+			cs.CountryCriminalSearches = append(cs.CountryCriminalSearches, *ccs)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for _, stateCriminalSearchID := range r.StateCriminalSearchIDs {
+			scs, err := r.GetStateCriminalSearch(stateCriminalSearchID, c)
+			if err != nil {
+				log.Println("error getting state criminal searches", err)
+				continue
+			}
+			cs.StateCriminalSearch = append(cs.StateCriminalSearch, *scs)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cs.MotorVehicleReport, err = r.GetMotorVehicleReportSearch(r.MotorVehicleReportID, c)
+		if err != nil {
+			log.Println("error getting motor vehicle report", err)
+		}
+	}()
+
+	//todo the fields EducationVerificationSearchID and EmploymentVerificationSearchID are not present
+	// not sure how to get EducationVerificationSearch and EmploymentVerificationSearch
+	// wg.Add(1)
+	// go func() {
+	// 	defer wg.Done()
+	// 	cs.EducationVerification, err = r.GetEducationVerificationSearch(r.EducationVerificationSearchID, c)
+	// 	if err != nil {
+	// 		log.Println("error getting education verification", err)
+	// 	}
+	// }()
+
+	// wg.Add(1)
+	// go func() {
+	// 	defer wg.Done()
+	// 	cs.EmploymentVerification, err = r.GetEmploymentVerificationSearch(r.EmploymentVerificationSearchID, c)
+	// 	if err != nil {
+	// 		log.Println("error getting employment verification", err)
+	// 	}
+	// }()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		cs.IdentityDocumentVerification, err = r.GetIdentityDocumentSearch(r.IdentityDocumentVerificationID, c)
+		if err != nil {
+			log.Println("error getting identity document search", err)
+		}
+	}()
+
+	wg.Wait()
+
+	return cs, nil
+
+}
+
 const createReportPath = "/v1/reports"
 
 func (c *Client) CreateReport(reqPayload *CreateReportRequest) (*Report, error) {
@@ -729,6 +852,5 @@ func (c *Client) GetReport(reportID string) (*Report, error) {
 		return nil, err
 	}
 
-	
 	return report, nil
 }

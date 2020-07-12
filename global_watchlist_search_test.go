@@ -10,7 +10,7 @@ func TestClient_GetGlobalWatchListSearch(t *testing.T) {
 	candidate := createCandidate(t)
 	reqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
-		Package:     DriverPro.Code(),
+		Package:     DriverPro.Slug(),
 	}
 	client := newClient(t)
 	rpt, err := client.CreateReport(reqPayload)

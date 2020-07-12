@@ -10,13 +10,14 @@ func TestClient_GetScreenings(t *testing.T) {
 	candidate := createCandidate(t)
 	reqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
-		Package:     DriverPro.Code(),
+		Package:     DriverPro.Slug(),
 	}
 	client := newClient(t)
 	rpt, err := client.CreateReport(reqPayload)
 	require.NoError(t, err)
 	require.NotNil(t, rpt)
 
-	screenings := GetScreenings(rpt, client)
+	screenings,err := rpt.GetScreenings(client)
+	require.NoError(t, err)
 	require.NotEmpty(t, screenings)
 }

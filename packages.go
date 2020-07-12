@@ -13,20 +13,13 @@ type screeningPackage string
 
 // ScreeningPackage ...
 type ScreeningPackage interface {
-	Message() string
-	Code() string
+	Slug() string
 }
 
 var packages = make(map[ScreeningPackage]string)
 
-// Message returns Message string from message
-// map for particular Package
-func (a screeningPackage) Message() string {
-	return packages[a]
-}
-
 // Code returns Package title string
-func (a screeningPackage) Code() string {
+func (a screeningPackage) Slug() string {
 	return string(a)
 }
 
