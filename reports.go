@@ -3,6 +3,7 @@ package checkr
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -10,6 +11,24 @@ import (
 	"path"
 	"sync"
 	"time"
+)
+
+// ScreenType ...
+type ScreenType int
+
+// all screentypes
+const (
+	SsnTrace ScreenType = iota
+	Sexoffendersearch
+	GlobalWatchListsearch
+	NationalCriminalsearch
+	FederalCriminalsearch
+	CountryCriminalsearch
+	StateCriminalsearch
+	MotorVehiclereport
+	Educationverification
+	Employmentverification
+	IdentityDocumentverification
 )
 
 // CreateReportRequest ...
@@ -59,6 +78,12 @@ func (r *Report) Unmarshal(b []byte) error {
 const ssnTracePath = "/v1/ssn_traces"
 
 func (r *Report) GetSSNTrace(ssnTraceID string, c *Client) (*SSNTrace, error) {
+
+	// since ID is empty we don't have anything to return. the caller should make sure if ssnTraceID is nil
+	if ssnTraceID == "" {
+		return nil, errors.New("empty ID")
+	}
+
 	rel, err := url.Parse(ssnTracePath)
 	if err != nil {
 		return nil, err
@@ -77,10 +102,6 @@ func (r *Report) GetSSNTrace(ssnTraceID string, c *Client) (*SSNTrace, error) {
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
-	}
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, nil
 	}
 
 	if resp.StatusCode != http.StatusOK {
@@ -111,6 +132,11 @@ func (r *Report) GetSSNTrace(ssnTraceID string, c *Client) (*SSNTrace, error) {
 const sexOffenderSearchPath = "/v1/sex_offender_searches"
 
 func (r *Report) GetSexOffenderSearch(sexOffenderSearchID string, c *Client) (*SexOffenderSearch, error) {
+
+	if sexOffenderSearchID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(sexOffenderSearchPath)
 	if err != nil {
 		return nil, err
@@ -163,6 +189,11 @@ func (r *Report) GetSexOffenderSearch(sexOffenderSearchID string, c *Client) (*S
 const globalWatchListSearchPath = "/v1/global_watchlist_searches"
 
 func (r *Report) GetGlobalWatchListSearch(globalWatchlistSearchID string, c *Client) (*GlobalWatchListSearch, error) {
+
+	if globalWatchlistSearchID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(globalWatchListSearchPath)
 	if err != nil {
 		return nil, err
@@ -215,6 +246,11 @@ func (r *Report) GetGlobalWatchListSearch(globalWatchlistSearchID string, c *Cli
 const nationalCriminalSearchPath = "/v1/national_criminal_searches"
 
 func (r *Report) GetNationalCriminalSearch(nationalCriminalSearchID string, c *Client) (*NationalCriminalSearch, error) {
+
+	if nationalCriminalSearchID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(nationalCriminalSearchPath)
 	if err != nil {
 		return nil, err
@@ -267,6 +303,11 @@ func (r *Report) GetNationalCriminalSearch(nationalCriminalSearchID string, c *C
 const federalCriminalSearchPath = "/v1/federal_criminal_searches"
 
 func (r *Report) GetFederalCriminalSearch(federalCrimeSearchID string, c *Client) (*FederalCriminalSearch, error) {
+
+	if federalCrimeSearchID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(federalCriminalSearchPath)
 	if err != nil {
 		return nil, err
@@ -319,6 +360,11 @@ func (r *Report) GetFederalCriminalSearch(federalCrimeSearchID string, c *Client
 const countryCriminalSearchPath = "/v1/county_criminal_searches"
 
 func (r *Report) GetCountryCriminalSearch(countryCriminalSearchID string, c *Client) (*CountryCriminalSearch, error) {
+
+	if countryCriminalSearchID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(countryCriminalSearchPath)
 	if err != nil {
 		return nil, err
@@ -371,6 +417,11 @@ func (r *Report) GetCountryCriminalSearch(countryCriminalSearchID string, c *Cli
 const stateCriminalSearchPath = "/v1/state_criminal_searches"
 
 func (r *Report) GetStateCriminalSearch(stateCriminalSearchID string, c *Client) (*StateCriminalSearch, error) {
+
+	if stateCriminalSearchID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(stateCriminalSearchPath)
 	if err != nil {
 		return nil, err
@@ -423,6 +474,11 @@ func (r *Report) GetStateCriminalSearch(stateCriminalSearchID string, c *Client)
 const motorVehicleReportSearchPath = "/v1/motor_vehicle_reports"
 
 func (r *Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c *Client) (*MotorVehicleReport, error) {
+
+	if motorVehicleReportID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(motorVehicleReportSearchPath)
 	if err != nil {
 		return nil, err
@@ -475,6 +531,11 @@ func (r *Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c *Cli
 const educationVerificationSearchPath = "/v1/education_verifications"
 
 func (r *Report) GetEducationVerificationSearch(educationVerificationID string, c *Client) (*EducationVerification, error) {
+
+	if educationVerificationID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(educationVerificationSearchPath)
 	if err != nil {
 		return nil, err
@@ -527,6 +588,11 @@ func (r *Report) GetEducationVerificationSearch(educationVerificationID string, 
 const employmentVerificationSearchPath = "/v1/employment_verifications"
 
 func (r *Report) GetEmploymentVerificationSearch(employmentVerificationID string, c *Client) (*EmploymentVerification, error) {
+
+	if employmentVerificationID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(employmentVerificationSearchPath)
 	if err != nil {
 		return nil, err
@@ -579,6 +645,11 @@ func (r *Report) GetEmploymentVerificationSearch(employmentVerificationID string
 const identityDocumentVerificationSearchPath = "/v1/identity_document_verifications"
 
 func (r *Report) GetIdentityDocumentSearch(identityDocumentVerificationID string, c *Client) (*IdentityDocumentVerification, error) {
+
+	if identityDocumentVerificationID == "" {
+		return nil, nil
+	}
+
 	rel, err := url.Parse(identityDocumentVerificationSearchPath)
 	if err != nil {
 		return nil, err
@@ -634,119 +705,101 @@ func (r *Report) GetScreenings(c *Client) (*Screenings, error) {
 	var err error
 	var wg sync.WaitGroup
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs.SSNTrace, err = r.GetSSNTrace(r.SSNTraceID, c)
-		if err != nil {
-			log.Println("error getting ssn trace ", err)
-		}
-	}()
+	screenIds := make(map[ScreenType]string)
+	screenIds[SsnTrace] = r.SSNTraceID
+	screenIds[Sexoffendersearch] = r.SexOffenderSearchID
+	screenIds[GlobalWatchListsearch] = r.GlobalWatchlistSearchID
+	screenIds[NationalCriminalsearch] = r.NationalCriminalSearchID
+	screenIds[FederalCriminalsearch] = r.FederalCrimeSearchID
+	screenIds[MotorVehiclereport] = r.MotorVehicleReportID
+	if len(r.CountyCriminalSearchIDs) > 0 {
+		screenIds[CountryCriminalsearch] = r.CountyCriminalSearchIDs[0]
+	}
+	if len(r.StateCriminalSearchIDs) > 0 {
+		screenIds[StateCriminalsearch] = r.StateCriminalSearchIDs[0]
+	}
+	//change these two if we know how to get the ids of these to pass to functions
+	screenIds[Educationverification] = ""
+	screenIds[Employmentverification] = ""
+	screenIds[IdentityDocumentverification] = r.IdentityDocumentVerificationID
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs.SexOffenderSearch, err = r.GetSexOffenderSearch(r.SexOffenderSearchID, c)
-		if err != nil {
-			log.Println("error getting sex offender searches", err)
+	for screenType, id := range screenIds {
+		if id == "" {
+			continue
 		}
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs.GlobalWatchListSearch, err = r.GetGlobalWatchListSearch(r.GlobalWatchlistSearchID, c)
-		if err != nil {
-			log.Println("error getting global watch list searches", err)
-		}
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs.NationalCriminalSearch, err = r.GetNationalCriminalSearch(r.NationalCriminalSearchID, c)
-		if err != nil {
-			log.Println("error getting national criminal searches", err)
-		}
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs.FederalCriminalSearch, err = r.GetFederalCriminalSearch(r.FederalCrimeSearchID, c)
-		if err != nil {
-			log.Println("error getting federal criminal search", err)
-		}
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		for _, countyCriminalSearchID := range r.CountyCriminalSearchIDs {
-			ccs, err := r.GetCountryCriminalSearch(countyCriminalSearchID, c)
-			if err != nil {
-				log.Println("error getting country criminal searches", err)
-				continue
+		wg.Add(1)
+		go func(t ScreenType) {
+			defer wg.Done()
+			switch t {
+			case SsnTrace:
+				cs.SSNTrace, err = r.GetSSNTrace(r.SSNTraceID, c)
+				if err != nil {
+					log.Println("error getting ssn trace ", err)
+				}
+			case Sexoffendersearch:
+				cs.SexOffenderSearch, err = r.GetSexOffenderSearch(r.SexOffenderSearchID, c)
+				if err != nil {
+					log.Println("error getting sex offender searches", err)
+				}
+			case GlobalWatchListsearch:
+				cs.GlobalWatchListSearch, err = r.GetGlobalWatchListSearch(r.GlobalWatchlistSearchID, c)
+				if err != nil {
+					log.Println("error getting global watch list searches", err)
+				}
+			case NationalCriminalsearch:
+				cs.NationalCriminalSearch, err = r.GetNationalCriminalSearch(r.NationalCriminalSearchID, c)
+				if err != nil {
+					log.Println("error getting national criminal searches", err)
+				}
+			case FederalCriminalsearch:
+				cs.FederalCriminalSearch, err = r.GetFederalCriminalSearch(r.FederalCrimeSearchID, c)
+				if err != nil {
+					log.Println("error getting federal criminal search", err)
+				}
+			case CountryCriminalsearch:
+				for _, countyCriminalSearchID := range r.CountyCriminalSearchIDs {
+					ccs, err := r.GetCountryCriminalSearch(countyCriminalSearchID, c)
+					if err != nil {
+						log.Println("error getting country criminal searches", err)
+						continue
+					}
+					cs.CountryCriminalSearches = append(cs.CountryCriminalSearches, *ccs)
+				}
+			case StateCriminalsearch:
+				for _, stateCriminalSearchID := range r.StateCriminalSearchIDs {
+					scs, err := r.GetStateCriminalSearch(stateCriminalSearchID, c)
+					if err != nil {
+						log.Println("error getting state criminal searches", err)
+						continue
+					}
+					cs.StateCriminalSearch = append(cs.StateCriminalSearch, *scs)
+				}
+			case MotorVehiclereport:
+				cs.MotorVehicleReport, err = r.GetMotorVehicleReportSearch(r.MotorVehicleReportID, c)
+				if err != nil {
+					log.Println("error getting motor vehicle report", err)
+				}
+			case Educationverification:
+				// cs.EducationVerification, err = r.GetEducationVerificationSearch(r.EducationVerificationSearchID, c)
+				// if err != nil {
+				// 	log.Println("error getting education verification", err)
+				// }
+			case Employmentverification:
+				// cs.EmploymentVerification, err = r.GetEmploymentVerificationSearch(r.EmploymentVerificationSearchID, c)
+				// if err != nil {
+				// 	log.Println("error getting employment verification", err)
+				// }
+			case IdentityDocumentverification:
+				cs.IdentityDocumentVerification, err = r.GetIdentityDocumentSearch(r.IdentityDocumentVerificationID, c)
+				if err != nil {
+					log.Println("error getting identity document search", err)
+				}
 			}
-			cs.CountryCriminalSearches = append(cs.CountryCriminalSearches, *ccs)
-		}
-	}()
+		}(screenType)
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		for _, stateCriminalSearchID := range r.StateCriminalSearchIDs {
-			scs, err := r.GetStateCriminalSearch(stateCriminalSearchID, c)
-			if err != nil {
-				log.Println("error getting state criminal searches", err)
-				continue
-			}
-			cs.StateCriminalSearch = append(cs.StateCriminalSearch, *scs)
-		}
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs.MotorVehicleReport, err = r.GetMotorVehicleReportSearch(r.MotorVehicleReportID, c)
-		if err != nil {
-			log.Println("error getting motor vehicle report", err)
-		}
-	}()
-
-	//todo the fields EducationVerificationSearchID and EmploymentVerificationSearchID are not present
-	// not sure how to get EducationVerificationSearch and EmploymentVerificationSearch
-	// wg.Add(1)
-	// go func() {
-	// 	defer wg.Done()
-	// 	cs.EducationVerification, err = r.GetEducationVerificationSearch(r.EducationVerificationSearchID, c)
-	// 	if err != nil {
-	// 		log.Println("error getting education verification", err)
-	// 	}
-	// }()
-
-	// wg.Add(1)
-	// go func() {
-	// 	defer wg.Done()
-	// 	cs.EmploymentVerification, err = r.GetEmploymentVerificationSearch(r.EmploymentVerificationSearchID, c)
-	// 	if err != nil {
-	// 		log.Println("error getting employment verification", err)
-	// 	}
-	// }()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs.IdentityDocumentVerification, err = r.GetIdentityDocumentSearch(r.IdentityDocumentVerificationID, c)
-		if err != nil {
-			log.Println("error getting identity document search", err)
-		}
-	}()
-
+	}
 	wg.Wait()
-
 	return cs, nil
-
 }
 
 const createReportPath = "/v1/reports"
