@@ -7,8 +7,8 @@ import (
 	"net/http"
 )
 
-// Error ...
-type Error interface {
+// ResponseError ...
+type ResponseError interface {
 	Error() string
 	Response() *http.Response
 }
@@ -39,25 +39,25 @@ func (e *errResponse) Response() *http.Response {
 	return e.response
 }
 
-// NewError ...
-func NewError(expectedRespCode []int, resp *http.Response) Error {
+// NewResponseError ...
+func NewResponseError(expectedRespCode []int, resp *http.Response) ResponseError {
 	return &errResponse{
 		expectedResponseCode: expectedRespCode,
 		response:             resp,
 	}
 }
 
-// NewErrorX wraps all details we get during screening or checkr requests
-func NewErrorX(id string, st ScreenType, err error, expectedRespCode int, resp *http.Response) *ErrorX {
-	return &ErrorX{
+// NewError wraps all details we get during screening or checkr requests
+func NewError(id string, st ScreenType, err error, expectedRespCode int, resp *http.Response) *Error {
+	return &Error{
 		id:                   id,
 		expectedResponseCode: expectedRespCode,
 		response:             resp,
 	}
 }
 
-// ErrorX ...
-type ErrorX struct {
+// Error ...
+type Error struct {
 	expectedResponseCode int
 	response             *http.Response
 	id                   string
@@ -65,7 +65,7 @@ type ErrorX struct {
 	screenType           ScreenType
 }
 
-func (e *ErrorX) Error() string {
+func (e *Error) Error() string {
 	if e.response != nil {
 		b, err := ioutil.ReadAll(e.response.Body)
 		if err != nil {
@@ -94,10 +94,10 @@ func (e *ErrorX) Error() string {
 	)
 }
 
-// ErrorsX ...
-type ErrorsX []ErrorX
+// Errors ...
+type Errors []Error
 
-func (e ErrorsX) String() string {
+func (e Errors) String() string {
 	buf := bytes.Buffer{}
 	for _, err := range e {
 		buf.WriteString(err.Error() + "\n")
@@ -107,7 +107,7 @@ func (e ErrorsX) String() string {
 
 // ScreeningError ...
 type ScreeningError struct {
-	errMap map[ScreenType][]*ErrorX
+	errMap map[ScreenType][]*Error
 }
 
 func (s *ScreeningError) Error() string {

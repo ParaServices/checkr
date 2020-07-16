@@ -17,7 +17,7 @@ func TestClient_GetNationalCriminalListSearch(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, rpt)
 	nationalCriminalSearch, err := rpt.GetNationalCriminalSearch(rpt.NationalCriminalSearchID, client)
-	require.NoError(t, err)
+	require.Empty(t, err)
 	require.NotEmpty(t, nationalCriminalSearch)
 
 }

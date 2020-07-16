@@ -17,6 +17,6 @@ func TestClient_GetMotorVehicleReport(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, rpt)
 	mvReport, err := rpt.GetMotorVehicleReportSearch(rpt.MotorVehicleReportID, client)
-	require.NoError(t, err)
+	require.Empty(t, err)
 	require.NotEmpty(t, mvReport)
 }

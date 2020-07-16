@@ -19,7 +19,7 @@ func TestClient_GetCountryCriminalSearch(t *testing.T) {
 	require.NotNil(t, rpt)
 	for _, c := range rpt.CountyCriminalSearchIDs {
 		countryCriminalSearch, err := rpt.GetCountryCriminalSearch(c, client)
-		require.NoError(t, err)
+		require.Empty(t, err)
 		require.NotEmpty(t, countryCriminalSearch)
 		log.Println(countryCriminalSearch)
 	}

@@ -18,6 +18,6 @@ func TestClient_GetScreenings(t *testing.T) {
 	require.NotNil(t, rpt)
 
 	screenings,err := rpt.GetScreenings(client)
-	require.NoError(t, err)
+	require.Empty(t, err)
 	require.NotEmpty(t, screenings)
 }

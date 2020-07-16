@@ -142,7 +142,7 @@ func (c *Client) ListPackages() (*ListPackagesResponse, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, NewError([]int{
+		return nil, NewResponseError([]int{
 			http.StatusOK,
 		}, resp)
 	}

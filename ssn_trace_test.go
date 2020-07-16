@@ -18,6 +18,6 @@ func TestClient_GetSSNTrace(t *testing.T) {
 	require.NotNil(t, rpt)
 
 	ssnTrace, err := rpt.GetSSNTrace(rpt.SSNTraceID, client)
-	require.NoError(t, err)
+	require.Empty(t, err)
 	require.NotEmpty(t, ssnTrace)
 }

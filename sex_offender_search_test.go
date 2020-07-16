@@ -17,7 +17,7 @@ func TestClient_GetSexOffenderListSearch(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, rpt)
 	sexOffenderSearch, err := rpt.GetSexOffenderSearch(rpt.SexOffenderSearchID, client)
-	require.NoError(t, err)
+	require.Empty(t, err)
 	require.NotEmpty(t, sexOffenderSearch)
 
 }
