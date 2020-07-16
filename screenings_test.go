@@ -7,7 +7,7 @@ import (
 )
 
 func TestClient_GetScreenings(t *testing.T) {
-	candidate := createCandidate(t)
+	candidate := createCandidate(t, false)
 	reqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
 		Package:     DriverPro.Slug(),
@@ -17,7 +17,7 @@ func TestClient_GetScreenings(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, rpt)
 
-	screenings,err := rpt.GetScreenings(client)
+	screenings, err := rpt.GetScreenings(client)
 	require.Empty(t, err)
 	require.NotEmpty(t, screenings)
 }

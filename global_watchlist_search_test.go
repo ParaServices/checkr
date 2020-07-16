@@ -7,7 +7,7 @@ import (
 )
 
 func TestClient_GetGlobalWatchListSearch(t *testing.T) {
-	candidate := createCandidate(t)
+	candidate := createCandidate(t, false)
 	reqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
 		Package:     DriverPro.Slug(),
