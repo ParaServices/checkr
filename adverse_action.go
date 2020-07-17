@@ -71,7 +71,7 @@ func (c *Client) CreateAdverseActionRequest(reportID string, reqPayload *CreateA
 	}
 
 	if resp.StatusCode != http.StatusCreated {
-		return nil, NewResponseError([]int{
+		return nil, NewError([]int{
 			http.StatusCreated,
 		}, resp)
 	}
@@ -124,7 +124,7 @@ func (c *Client) GetAdverseAction(adverseActionID string) (*AdverseAction, error
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, NewResponseError([]int{
+		return nil, NewError([]int{
 			http.StatusCreated,
 		}, resp)
 	}

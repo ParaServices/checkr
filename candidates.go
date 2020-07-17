@@ -96,7 +96,7 @@ func (c *Client) CreateCandidate(reqPayload *CreateCandidateRequest) (*Candidate
 	}
 
 	if resp.StatusCode != http.StatusCreated {
-		return nil, NewResponseError([]int{
+		return nil, NewError([]int{
 			http.StatusCreated,
 		}, resp)
 	}

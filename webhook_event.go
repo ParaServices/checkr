@@ -72,7 +72,7 @@ func (w *WebhookEvent) GetReport(c *Client, u Unmarshaler) error {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return NewResponseError([]int{
+		return NewError([]int{
 			http.StatusOK,
 		}, resp)
 	}

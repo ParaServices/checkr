@@ -29,10 +29,10 @@ const (
 	TaskerPro      screeningPackage = "tasker_pro"
 	DriverStandard screeningPackage = "driver_standard"
 	DriverPro      screeningPackage = "driver_pro"
-	SsnScreen      screeningPackage = "ssn_screen_only"
+	SSNScreen      screeningPackage = "ssn_screen_only"
 	Biternoon      screeningPackage = "biternoon_only"
 	Pumaalpine     screeningPackage = "pumaalpine_only"
-	Samuraishimmer screeningPackage = "samuraishimmer_only"
+	SamuraiShimmer screeningPackage = "samuraishimmer_only"
 	Edgepower      screeningPackage = "edgepower_only"
 	Princessring   screeningPackage = "princessring_only"
 	Flybead        screeningPackage = "flybead_only"
@@ -58,10 +58,10 @@ var (
 		TaskerPro:      "Tasker Pro",
 		DriverStandard: "Driver Standard",
 		DriverPro:      "Driver Pro",
-		SsnScreen:      "ssn_screen",
+		SSNScreen:      "ssn_screen",
 		Biternoon:      "Biternoon",
 		Pumaalpine:     "Pumaalpine",
-		Samuraishimmer: "Samuraishimmer",
+		SamuraiShimmer: "Samuraishimmer",
 		Edgepower:      "Edgepower",
 		Princessring:   "Princessring",
 		Flybead:        "Flybead",
@@ -142,7 +142,7 @@ func (c *Client) ListPackages() (*ListPackagesResponse, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, NewResponseError([]int{
+		return nil, NewError([]int{
 			http.StatusOK,
 		}, resp)
 	}

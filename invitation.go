@@ -67,7 +67,7 @@ func (c *Client) CreateInvitation(reqPayload *CreateInvitationRequest) (*Invitat
 	}
 
 	if resp.StatusCode != http.StatusCreated {
-		return nil, NewResponseError([]int{
+		return nil, NewError([]int{
 			http.StatusCreated,
 		}, resp)
 	}
@@ -119,7 +119,7 @@ func (c *Client) GetInvitation(invitationID string) (*Invitation, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, NewResponseError([]int{
+		return nil, NewError([]int{
 			http.StatusCreated,
 		}, resp)
 	}
