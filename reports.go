@@ -36,6 +36,10 @@ type CreateReportRequest struct {
 	CandidateID string `json:"candidate_id,omitempty"`
 }
 
+var (
+	errEmptyID = errors.New("ID is empty")
+)
+
 // Report ...
 type Report struct {
 	ID                               string     `json:"id,omitempty"`
@@ -80,7 +84,7 @@ const ssnTracePath = "/v1/ssn_traces"
 func (r *Report) GetSSNTrace(ssnTraceID string, c *Client) (*SSNTrace, error) {
 	// since ID is empty we don't have anything to return. the caller should make sure if ssnTraceID is nil
 	if ssnTraceID == "" {
-		return nil, errors.New("ssnTraceID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(ssnTracePath)
@@ -134,7 +138,7 @@ const sexOffenderSearchPath = "/v1/sex_offender_searches"
 func (r *Report) GetSexOffenderSearch(sexOffenderSearchID string, c *Client) (*SexOffenderSearch, error) {
 
 	if sexOffenderSearchID == "" {
-		return nil, errors.New("sexOffenderSearchID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(sexOffenderSearchPath)
@@ -188,7 +192,7 @@ const globalWatchListSearchPath = "/v1/global_watchlist_searches"
 func (r *Report) GetGlobalWatchListSearch(globalWatchlistSearchID string, c *Client) (*GlobalWatchListSearch, error) {
 
 	if globalWatchlistSearchID == "" {
-		return nil, errors.New("globalWatchlistSearchID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(globalWatchListSearchPath)
@@ -242,7 +246,7 @@ const nationalCriminalSearchPath = "/v1/national_criminal_searches"
 func (r *Report) GetNationalCriminalSearch(nationalCriminalSearchID string, c *Client) (*NationalCriminalSearch, error) {
 
 	if nationalCriminalSearchID == "" {
-		return nil, errors.New("nationalCriminalSearchID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(nationalCriminalSearchPath)
@@ -296,7 +300,7 @@ const federalCriminalSearchPath = "/v1/federal_criminal_searches"
 func (r *Report) GetFederalCriminalSearch(federalCrimeSearchID string, c *Client) (*FederalCriminalSearch, error) {
 
 	if federalCrimeSearchID == "" {
-		return nil, errors.New("federalCrimeSearchID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(federalCriminalSearchPath)
@@ -350,7 +354,7 @@ const countryCriminalSearchPath = "/v1/county_criminal_searches"
 func (r *Report) GetCountryCriminalSearch(countryCriminalSearchID string, c *Client) (*CountryCriminalSearch, error) {
 
 	if countryCriminalSearchID == "" {
-		return nil, errors.New("countryCriminalSearchID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(countryCriminalSearchPath)
@@ -404,7 +408,7 @@ const stateCriminalSearchPath = "/v1/state_criminal_searches"
 func (r *Report) GetStateCriminalSearch(stateCriminalSearchID string, c *Client) (*StateCriminalSearch, error) {
 
 	if stateCriminalSearchID == "" {
-		return nil, errors.New("stateCriminalSearchID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(stateCriminalSearchPath)
@@ -458,7 +462,7 @@ const motorVehicleReportSearchPath = "/v1/motor_vehicle_reports"
 func (r *Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c *Client) (*MotorVehicleReport, error) {
 
 	if motorVehicleReportID == "" {
-		return nil, errors.New("motorVehicleReportID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(motorVehicleReportSearchPath)
@@ -511,7 +515,7 @@ const educationVerificationSearchPath = "/v1/education_verifications"
 func (r *Report) GetEducationVerificationSearch(educationVerificationID string, c *Client) (*EducationVerification, error) {
 
 	if educationVerificationID == "" {
-		return nil, errors.New("educationVerificationID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(educationVerificationSearchPath)
@@ -565,7 +569,7 @@ const employmentVerificationSearchPath = "/v1/employment_verifications"
 func (r *Report) GetEmploymentVerificationSearch(employmentVerificationID string, c *Client) (*EmploymentVerification, error) {
 
 	if employmentVerificationID == "" {
-		return nil, errors.New("employmentVerificationID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(employmentVerificationSearchPath)
@@ -619,7 +623,7 @@ const identityDocumentVerificationSearchPath = "/v1/identity_document_verificati
 func (r *Report) GetIdentityDocumentSearch(identityDocumentVerificationID string, c *Client) (*IdentityDocumentVerification, error) {
 
 	if identityDocumentVerificationID == "" {
-		return nil, errors.New("identityDocumentVerificationID is empty")
+		return nil, errEmptyID
 	}
 
 	rel, err := url.Parse(identityDocumentVerificationSearchPath)
@@ -760,6 +764,9 @@ func (r *Report) GetScreenings(c *Client) (*Screenings, error) {
 	close(errorChan)
 	sr := &ScreeningErrors{}
 	for err := range errorChan {
+		if err == errEmptyID {
+			continue
+		}
 		sr.errors = append(sr.errors, err)
 	}
 	return cs, sr
