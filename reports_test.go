@@ -7,7 +7,7 @@ import (
 )
 
 func TestClient_CreateReport(t *testing.T) {
-	candidate := createCandidate(t)
+	candidate := createCandidate(t, false)
 	reqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
 		Package:     randomPackage(t).Slug,

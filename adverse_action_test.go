@@ -38,7 +38,7 @@ func TestClient_GetAdverseAction(t *testing.T) {
 	client, err := NewClient(&opts)
 	require.NoError(t, err)
 
-	candidate := createCandidate(t)
+	candidate := createCandidate(t, false)
 	reportReqPayload := &CreateReportRequest{
 		CandidateID: candidate.ID,
 		Package:     randomPackage(t).Slug,

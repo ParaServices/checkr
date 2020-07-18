@@ -13,7 +13,7 @@ func TestClient_CreateInvitiation(t *testing.T) {
 	require.NoError(t, err)
 
 	// create a candidate first
-	candidate := createCandidate(t)
+	candidate := createCandidate(t, false)
 	reqPayload := CreateInvitationRequest{}
 	reqPayload.CandidateID = candidate.ID
 	reqPayload.Package = "driver_pro"
@@ -29,7 +29,7 @@ func TestClient_GetInvitiation(t *testing.T) {
 	require.NoError(t, err)
 
 	// create a candidate first
-	candidate := createCandidate(t)
+	candidate := createCandidate(t, false)
 	reqPayload := CreateInvitationRequest{}
 	reqPayload.CandidateID = candidate.ID
 	reqPayload.Package = "driver_pro"

@@ -3,6 +3,7 @@ package checkr
 import (
 	"math/rand"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -29,22 +30,55 @@ func newClient(t *testing.T) *Client {
 	return client
 }
 
-func createCandidate(t *testing.T) *Candidate {
-	client := newClient(t)
-	customID, err := tg.RandGen(15, tg.LowerUpperDigit, "", "")
-	require.NoError(t, err)
-	reqPayload := CreateCandidateRequest{}
-	reqPayload.CustomID = customID
-	reqPayload.LastName = fake.LastName()
-	reqPayload.FirstName = fake.LastName()
-	reqPayload.Email = fake.EmailAddress()
-	reqPayload.DOB = "1990-02-14"
-	reqPayload.SSN = randata.RandomSSN(false, 1000)
-	reqPayload.ZipCode = "60616"
-	resp, err := client.CreateCandidate(&reqPayload)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	return resp
+var testCandidate *Candidate
+
+func createCandidate(t *testing.T, createNew bool) *Candidate {
+	if createNew || testCandidate == nil {
+		retries := 50
+		errs := make([]error, 0)
+		var candidate *Candidate
+		for i := 0; i < retries; i++ {
+			client := newClient(t)
+			customID, err := tg.RandGen(15, tg.LowerUpperDigit, "", "")
+			if err != nil {
+				errs = append(errs, err)
+				continue
+			}
+			reqPayload := CreateCandidateRequest{}
+			reqPayload.CustomID = customID
+			reqPayload.LastName = fake.LastName()
+			reqPayload.FirstName = fake.LastName()
+			digit, err := tg.RandGen(5, tg.Digit, "", "")
+			if err != nil {
+				errs = append(errs, err)
+				continue
+			}
+			reqPayload.Email = strings.Join([]string{"testdev", digit, "@joinpara.com"}, "")
+			reqPayload.DOB = "1990-02-14"
+			reqPayload.SSN = randata.RandomSSN(false, 1000)
+			reqPayload.ZipCode = "60616"
+			reqPayload.DriverLicenseNumber = "Y2367382"
+			reqPayload.DriverLicenseState = "CA"
+			resp, err := client.CreateCandidate(&reqPayload)
+			if err != nil {
+				errs = append(errs, err)
+				continue
+			}
+			if resp != nil {
+				candidate = resp
+			}
+		}
+		if candidate == nil {
+			for i := range errs {
+				assert.NoError(t, errs[i])
+			}
+			require.FailNow(t, "Couldn't generate a valid candidate")
+		}
+		testCandidate = candidate
+
+	}
+	// we will still assert here so it fails
+	return testCandidate
 }
 
 func listPackages(t *testing.T) *ListPackagesResponse {

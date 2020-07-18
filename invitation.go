@@ -12,18 +12,18 @@ import (
 
 // Invitation ...
 type Invitation struct {
-	ID            string     `json:"id,omitempty"`
-	Object        string     `json:"object,omitempty"`
-	URI           string     `json:"uri,omitempty"`
-	InvitationURL string     `json:"invitation_url,omitempty"`
-	Status        string     `json:"status,omitempty"`
+	ID            string      `json:"id,omitempty"`
+	Object        string      `json:"object,omitempty"`
+	URI           string      `json:"uri,omitempty"`
+	InvitationURL string      `json:"invitation_url,omitempty"`
+	Status        string      `json:"status,omitempty"`
 	CreatedAt     *time.Time `json:"created_at,omitempty"`
 	ExpiresAt     *time.Time `json:"expires_at,omitempty"`
 	CompletedAt   *time.Time `json:"completed_at,omitempty"`
 	DeletedAt     *time.Time `json:"deleted_at,omitempty"`
-	Package       string     `json:"package,omitempty"`
-	CandidateID   string     `json:"candidate_id,omitempty"`
-	ReportID      string     `json:"report_id,omitempty"`
+	Package       string      `json:"package,omitempty"`
+	CandidateID   string      `json:"candidate_id,omitempty"`
+	ReportID      string      `json:"report_id,omitempty"`
 }
 
 // Unmarshal ...
@@ -67,7 +67,7 @@ func (c *Client) CreateInvitation(reqPayload *CreateInvitationRequest) (*Invitat
 	}
 
 	if resp.StatusCode != http.StatusCreated {
-		return nil, NewError([]int{
+		return nil, NewResponseError([]int{
 			http.StatusCreated,
 		}, resp)
 	}
@@ -119,7 +119,7 @@ func (c *Client) GetInvitation(invitationID string) (*Invitation, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, NewError([]int{
+		return nil, NewResponseError([]int{
 			http.StatusCreated,
 		}, resp)
 	}

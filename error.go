@@ -1,6 +1,7 @@
 package checkr
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -38,10 +39,21 @@ func (e *errResponse) Response() *http.Response {
 	return e.response
 }
 
-// NewError ...
-func NewError(expectedRespCode []int, resp *http.Response) Error {
+// NewResponseError ...
+func NewResponseError(expectedRespCode []int, resp *http.Response) Error {
 	return &errResponse{
 		expectedResponseCode: expectedRespCode,
 		response:             resp,
 	}
+}
+
+// ScreeningErrors ...
+type ScreeningErrors []error
+
+func (s *ScreeningErrors) Error() string {
+	buf := bytes.Buffer{}
+	for _, err := range *s {
+		buf.WriteString(fmt.Sprintf("%s\n", err.Error()))
+	}
+	return buf.String()
 }
