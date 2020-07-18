@@ -53,7 +53,7 @@ type ScreeningErrors []error
 func (s *ScreeningErrors) Error() string {
 	buf := bytes.Buffer{}
 	for _, err := range *s {
-		buf.WriteString(err.Error())
+		buf.WriteString(fmt.Sprintf("%s\n", err.Error()))
 	}
 	return buf.String()
 }
