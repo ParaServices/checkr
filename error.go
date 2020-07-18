@@ -48,13 +48,11 @@ func NewResponseError(expectedRespCode []int, resp *http.Response) Error {
 }
 
 // ScreeningErrors ...
-type ScreeningErrors struct {
-	errors []error
-}
+type ScreeningErrors []error
 
 func (s *ScreeningErrors) Error() string {
 	buf := bytes.Buffer{}
-	for _, err := range s.errors {
+	for _, err := range *s {
 		buf.WriteString(err.Error())
 	}
 	return buf.String()

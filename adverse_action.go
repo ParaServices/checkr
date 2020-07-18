@@ -125,7 +125,7 @@ func (c *Client) GetAdverseAction(adverseActionID string) (*AdverseAction, error
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			http.StatusCreated,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {

@@ -768,14 +768,14 @@ func (r *Report) GetScreenings(c *Client) (*Screenings, error) {
 		close(errChan)
 	}()
 
-	sr := &ScreeningErrors{}
+	sr := ScreeningErrors{}
 	for err := range errChan {
 		if err == errEmptyID {
 			continue
 		}
-		sr.errors = append(sr.errors, err)
+		sr = append(sr, err)
 	}
-	return cs, sr
+	return cs, &sr
 }
 
 const createReportPath = "/v1/reports"
