@@ -39,29 +39,23 @@ func (e *errResponse) Response() *http.Response {
 	return e.response
 }
 
-// NewError ...
-func NewError(expectedRespCode []int, resp *http.Response) Error {
+// NewResponseError ...
+func NewResponseError(expectedRespCode []int, resp *http.Response) Error {
 	return &errResponse{
 		expectedResponseCode: expectedRespCode,
 		response:             resp,
 	}
 }
 
-// SError ...
-type SError struct {
-	T   ScreenType
-	Err Error
+// ScreeningErrors ...
+type ScreeningErrors struct {
+	errors []error
 }
 
-// ScreeningError ...
-type ScreeningError struct {
-	errMap map[ScreenType][]Error
-}
-
-func (s *ScreeningError) Error() string {
+func (s *ScreeningErrors) Error() string {
 	buf := bytes.Buffer{}
-	for k, v := range s.errMap {
-		buf.WriteString(fmt.Sprintf("screenType: %v,  Errors: %v \n", k, v))
+	for _, err := range s.errors {
+		buf.WriteString(err.Error())
 	}
 	return buf.String()
 }
