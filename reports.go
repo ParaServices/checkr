@@ -12,24 +12,6 @@ import (
 	"time"
 )
 
-// ScreenType ...
-type ScreenType int
-
-// all screentypes
-const (
-	SsnTrace ScreenType = iota
-	Sexoffendersearch
-	GlobalWatchListsearch
-	NationalCriminalsearch
-	FederalCriminalsearch
-	CountryCriminalsearch
-	StateCriminalsearch
-	MotorVehiclereport
-	Educationverification
-	Employmentverification
-	IdentityDocumentverification
-)
-
 // CreateReportRequest ...
 type CreateReportRequest struct {
 	Package     string `json:"package,omitempty"`
@@ -109,7 +91,7 @@ func (r *Report) GetSSNTrace(ssnTraceID string, c *Client) (*SSNTrace, error) {
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -163,7 +145,7 @@ func (r *Report) GetSexOffenderSearch(sexOffenderSearchID string, c *Client) (*S
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -217,7 +199,7 @@ func (r *Report) GetGlobalWatchListSearch(globalWatchlistSearchID string, c *Cli
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -271,7 +253,7 @@ func (r *Report) GetNationalCriminalSearch(nationalCriminalSearchID string, c *C
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -325,7 +307,7 @@ func (r *Report) GetFederalCriminalSearch(federalCrimeSearchID string, c *Client
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -379,7 +361,7 @@ func (r *Report) GetCountryCriminalSearch(countryCriminalSearchID string, c *Cli
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -433,7 +415,7 @@ func (r *Report) GetStateCriminalSearch(stateCriminalSearchID string, c *Client)
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -487,7 +469,7 @@ func (r *Report) GetMotorVehicleReportSearch(motorVehicleReportID string, c *Cli
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -540,7 +522,7 @@ func (r *Report) GetEducationVerificationSearch(educationVerificationID string, 
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -594,7 +576,7 @@ func (r *Report) GetEmploymentVerificationSearch(employmentVerificationID string
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -648,7 +630,7 @@ func (r *Report) GetIdentityDocumentSearch(identityDocumentVerificationID string
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, NewResponseError([]int{
-			resp.StatusCode,
+			http.StatusOK,
 		}, resp)
 	}
 	defer func() {
@@ -674,58 +656,72 @@ func (r *Report) GetIdentityDocumentSearch(identityDocumentVerificationID string
 // GetScreenings returns all the screenings for a report
 func (r *Report) GetScreenings(c *Client) (*Screenings, error) {
 	cs := &Screenings{}
-	var err error
-	var wg sync.WaitGroup
-
-	errorChan := make(chan error, 9+len(r.CountyCriminalSearchIDs)+len(r.StateCriminalSearchIDs))
+	errChan := make(chan error)
+	wg := sync.WaitGroup{}
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		cs.SSNTrace, err = r.GetSSNTrace(r.SSNTraceID, c)
+		ssnTrace, err := r.GetSSNTrace(r.SSNTraceID, c)
 		if err != nil {
-			errorChan <- err
+			errChan <- err
+			return
 		}
+		cs.SSNTrace = ssnTrace
 	}()
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		cs.SexOffenderSearch, err = r.GetSexOffenderSearch(r.SexOffenderSearchID, c)
+		sexOffenderSearch, err := r.GetSexOffenderSearch(r.SexOffenderSearchID, c)
 		if err != nil {
-			errorChan <- err
+			errChan <- err
+			return
 		}
+		cs.SexOffenderSearch = sexOffenderSearch
 	}()
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		cs.GlobalWatchListSearch, err = r.GetGlobalWatchListSearch(r.GlobalWatchlistSearchID, c)
+		globalWatchListSearch, err := r.GetGlobalWatchListSearch(r.GlobalWatchlistSearchID, c)
 		if err != nil {
-			errorChan <- err
+			errChan <- err
+			return
 		}
+		cs.GlobalWatchListSearch = globalWatchListSearch
 	}()
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		cs.NationalCriminalSearch, err = r.GetNationalCriminalSearch(r.NationalCriminalSearchID, c)
+		nationalCriminalSearch, err := r.GetNationalCriminalSearch(r.NationalCriminalSearchID, c)
 		if err != nil {
-			errorChan <- err
+			errChan <- err
+			return
 		}
+		cs.NationalCriminalSearch = nationalCriminalSearch
 	}()
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		cs.FederalCriminalSearch, err = r.GetFederalCriminalSearch(r.FederalCrimeSearchID, c)
+		federalCriminalSearch, err := r.GetFederalCriminalSearch(r.FederalCrimeSearchID, c)
 		if err != nil {
-			errorChan <- err
+			errChan <- err
+			return
 		}
+		cs.FederalCriminalSearch = federalCriminalSearch
 	}()
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		for _, countyCriminalSearchID := range r.CountyCriminalSearchIDs {
 			ccs, err := r.GetCountryCriminalSearch(countyCriminalSearchID, c)
 			if err != nil {
-				errorChan <- err
+				errChan <- err
+				continue
 			}
 			cs.CountryCriminalSearches = append(cs.CountryCriminalSearches, *ccs)
 		}
@@ -737,33 +733,43 @@ func (r *Report) GetScreenings(c *Client) (*Screenings, error) {
 		for _, stateCriminalSearchID := range r.StateCriminalSearchIDs {
 			scs, err := r.GetStateCriminalSearch(stateCriminalSearchID, c)
 			if err != nil {
-				errorChan <- err
+				errChan <- err
+				continue
 			}
 			cs.StateCriminalSearch = append(cs.StateCriminalSearch, *scs)
 		}
 
 	}()
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		cs.MotorVehicleReport, err = r.GetMotorVehicleReportSearch(r.MotorVehicleReportID, c)
+		motorVehicleReport, err := r.GetMotorVehicleReportSearch(r.MotorVehicleReportID, c)
 		if err != nil {
-			errorChan <- err
+			errChan <- err
+			return
 		}
-	}()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs.IdentityDocumentVerification, err = r.GetIdentityDocumentSearch(r.IdentityDocumentVerificationID, c)
-		if err != nil {
-			errorChan <- err
-		}
+		cs.MotorVehicleReport = motorVehicleReport
 	}()
 
-	wg.Wait()
-	close(errorChan)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		identityDocumentVerification, err := r.GetIdentityDocumentSearch(r.IdentityDocumentVerificationID, c)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		cs.IdentityDocumentVerification = identityDocumentVerification
+	}()
+
+	go func() {
+		wg.Wait()
+		close(errChan)
+	}()
+
 	sr := &ScreeningErrors{}
-	for err := range errorChan {
+	for err := range errChan {
 		if err == errEmptyID {
 			continue
 		}
